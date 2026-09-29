@@ -1,6 +1,6 @@
 from uzivatel import Uzivatel
 from hrac import Hrac
-from hemi_plocha import HemiPlocha
+from herni_plocha import herni_plocha
 from tah import Tah
 from revizor_tahu import RevizorTahu
 from game_logger import GameLogger
@@ -23,7 +23,7 @@ hrac2 = Hrac(barva=1, uzivatel=uzivatel2)
 print(hrac1)
 print(f"ELO hráče 1: {hrac1.getEloRating()}")
 
-plocha = HemiPlocha()
+plocha = herni_plocha()
 
 pesak = Pesak(barva=0)
 plocha.poloz_figurku(pesak, [6, 4])

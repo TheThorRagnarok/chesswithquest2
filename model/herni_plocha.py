@@ -1,4 +1,4 @@
-class HemiPlocha:
+class herni_plocha:
     def __init__(self):
         self.rozmery = (8, 8)
         self.herni_deska = []
