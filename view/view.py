@@ -11,7 +11,9 @@ BARVA_SVETLA = "#F0D9B5"
 BARVA_TMAVA = "#B58863"
 BARVA_VYBRANE = "#F6F669"    # označená figurka
 BARVA_TAH = "#4CAF50"        # tečka / kroužek pro možný tah
-BARVA_POZADI = "#EDE6DA"
+BARVA_POZADI = "#3C3C3C"        # tmavě šedé pozadí okna
+BARVA_TEXT = "#EEEEEE"          # světlý text na tmavém pozadí
+BARVA_NEAKTIVNI = "#9E9E9E"     # hodiny hráče, který není na tahu
 
 # Unicode symboly figurek: [bílá, černá]
 SYMBOLY = {
@@ -69,22 +71,22 @@ class SachovniceView:
         ramec.pack()
 
         tk.Label(ramec, text="♔ Šachy ♚", font=("Arial", 28, "bold"),
-                 bg=BARVA_POZADI).grid(row=0, column=0, columnspan=2, pady=(0, 20))
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).grid(row=0, column=0, columnspan=2, pady=(0, 20))
 
         tk.Label(ramec, text="Hráč 1 (bílý):", font=("Arial", 12),
-                 bg=BARVA_POZADI).grid(row=1, column=0, sticky="e", pady=5)
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).grid(row=1, column=0, sticky="e", pady=5)
         self.pole_jmeno1 = tk.Entry(ramec, font=("Arial", 12), width=20)
         self.pole_jmeno1.insert(0, "Hráč 1")
         self.pole_jmeno1.grid(row=1, column=1, pady=5)
 
         tk.Label(ramec, text="Hráč 2 (černý):", font=("Arial", 12),
-                 bg=BARVA_POZADI).grid(row=2, column=0, sticky="e", pady=5)
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).grid(row=2, column=0, sticky="e", pady=5)
         self.pole_jmeno2 = tk.Entry(ramec, font=("Arial", 12), width=20)
         self.pole_jmeno2.insert(0, "Hráč 2")
         self.pole_jmeno2.grid(row=2, column=1, pady=5)
 
         tk.Label(ramec, text="Délka hry:", font=("Arial", 12),
-                 bg=BARVA_POZADI).grid(row=3, column=0, sticky="ne", pady=(15, 5))
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).grid(row=3, column=0, sticky="ne", pady=(15, 5))
         self.delka_hry = tk.IntVar(value=5)
         ramec_casu = tk.Frame(ramec, bg=BARVA_POZADI)
         ramec_casu.grid(row=3, column=1, sticky="w", pady=(15, 5))
@@ -92,9 +94,11 @@ class SachovniceView:
         for moznost in moznosti:
             tk.Radiobutton(ramec_casu, text=moznost[1], variable=self.delka_hry,
                            value=moznost[0], font=("Arial", 12),
-                           bg=BARVA_POZADI).pack(anchor="w")
+                           bg=BARVA_POZADI, fg=BARVA_TEXT,
+                           selectcolor=BARVA_POZADI, activebackground=BARVA_POZADI,
+                           activeforeground=BARVA_TEXT, highlightthickness=0).pack(anchor="w")
 
-        self.chyba_uvod = tk.Label(ramec, text="", fg="red", font=("Arial", 11),
+        self.chyba_uvod = tk.Label(ramec, text="", fg="#FF6B6B", font=("Arial", 11),
                                    bg=BARVA_POZADI)
         self.chyba_uvod.grid(row=4, column=0, columnspan=2, pady=5)
 
@@ -135,9 +139,9 @@ class SachovniceView:
         panel.grid(row=0, column=1, sticky="n")
 
         tk.Label(panel, text="Na tahu:", font=("Arial", 11),
-                 bg=BARVA_POZADI).pack(anchor="w")
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).pack(anchor="w")
         self.label_aktivni = tk.Label(panel, text="", font=("Arial", 14, "bold"),
-                                      bg=BARVA_POZADI)
+                                      bg=BARVA_POZADI, fg=BARVA_TEXT)
         self.label_aktivni.pack(anchor="w", pady=(0, 15))
 
         # hodiny
@@ -152,19 +156,19 @@ class SachovniceView:
 
         # vyhozené figurky
         tk.Label(panel, text="Vyhozené figurky:", font=("Arial", 11, "bold"),
-                 bg=BARVA_POZADI).pack(anchor="w", pady=(15, 0))
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).pack(anchor="w", pady=(15, 0))
         self.label_vyhozene_b = tk.Label(panel, text="", font=("Segoe UI Symbol", 18),
-                                         bg=BARVA_POZADI, wraplength=260, justify="left")
+                                         bg=BARVA_POZADI, fg=BARVA_TEXT, wraplength=260, justify="left")
         self.label_vyhozene_b.pack(anchor="w")
         self.label_vyhozene_c = tk.Label(panel, text="", font=("Segoe UI Symbol", 18),
-                                         bg=BARVA_POZADI, wraplength=260, justify="left")
+                                         bg=BARVA_POZADI, fg=BARVA_TEXT, wraplength=260, justify="left")
         self.label_vyhozene_c.pack(anchor="w")
 
         # zprávy pro hráče
         tk.Label(panel, text="Zpráva:", font=("Arial", 11, "bold"),
-                 bg=BARVA_POZADI).pack(anchor="w", pady=(15, 0))
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).pack(anchor="w", pady=(15, 0))
         self.label_zprava = tk.Label(panel, text="", font=("Arial", 13),
-                                     fg="#B22222", bg=BARVA_POZADI,
+                                     fg="#FF6B6B", bg=BARVA_POZADI,
                                      wraplength=260, justify="left")
         self.label_zprava.pack(anchor="w")
 
@@ -234,10 +238,10 @@ class SachovniceView:
         for i in range(8):
             stred = OKRAJ + i * VELIKOST_POLE + VELIKOST_POLE // 2
             konec = OKRAJ + 8 * VELIKOST_POLE
-            self.canvas.create_text(stred, OKRAJ // 2, text=pismena[i], font=("Arial", 11))
-            self.canvas.create_text(stred, konec + OKRAJ // 2, text=pismena[i], font=("Arial", 11))
-            self.canvas.create_text(OKRAJ // 2, stred, text=str(8 - i), font=("Arial", 11))
-            self.canvas.create_text(konec + OKRAJ // 2, stred, text=str(8 - i), font=("Arial", 11))
+            self.canvas.create_text(stred, OKRAJ // 2, text=pismena[i], font=("Arial", 11), fill=BARVA_TEXT)
+            self.canvas.create_text(stred, konec + OKRAJ // 2, text=pismena[i], font=("Arial", 11), fill=BARVA_TEXT)
+            self.canvas.create_text(OKRAJ // 2, stred, text=str(8 - i), font=("Arial", 11), fill=BARVA_TEXT)
+            self.canvas.create_text(konec + OKRAJ // 2, stred, text=str(8 - i), font=("Arial", 11), fill=BARVA_TEXT)
 
     def oznac_pole(self, souradnice):
         # Zvýrazní pole s vybranou figurkou
@@ -259,11 +263,11 @@ class SachovniceView:
         if barva == 0:
             self.label_aktivni.config(text=f"{jmeno} (bílý)")
             self.label_cas_bily.config(bg="#FFFFFF", fg="black", relief="solid", bd=1)
-            self.label_cas_cerny.config(bg=BARVA_POZADI, fg="#777777", relief="flat", bd=1)
+            self.label_cas_cerny.config(bg=BARVA_POZADI, fg=BARVA_NEAKTIVNI, relief="flat", bd=1)
         else:
             self.label_aktivni.config(text=f"{jmeno} (černý)")
-            self.label_cas_cerny.config(bg="#333333", fg="white", relief="solid", bd=1)
-            self.label_cas_bily.config(bg=BARVA_POZADI, fg="#777777", relief="flat", bd=1)
+            self.label_cas_cerny.config(bg="#111111", fg="white", relief="solid", bd=1)
+            self.label_cas_bily.config(bg=BARVA_POZADI, fg=BARVA_NEAKTIVNI, relief="flat", bd=1)
 
     def aktualizuj_cas(self, cas_bile, cas_cerne):
         # cas_bile a cas_cerne jsou texty ve formátu "MM:SS"
@@ -300,12 +304,12 @@ class SachovniceView:
         ramec.pack()
 
         tk.Label(ramec, text="Konec hry", font=("Arial", 24, "bold"),
-                 bg=BARVA_POZADI).pack(pady=(0, 10))
-        tk.Label(ramec, text=vitez, font=("Arial", 14), bg=BARVA_POZADI,
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).pack(pady=(0, 10))
+        tk.Label(ramec, text=vitez, font=("Arial", 14), bg=BARVA_POZADI, fg=BARVA_TEXT,
                  wraplength=500, justify="center").pack(pady=(0, 15))
 
         tk.Label(ramec, text="Zápis partie (PGN):", font=("Arial", 11, "bold"),
-                 bg=BARVA_POZADI).pack(anchor="w")
+                 bg=BARVA_POZADI, fg=BARVA_TEXT).pack(anchor="w")
         pole_pgn = scrolledtext.ScrolledText(ramec, width=60, height=15,
                                              font=("Courier", 11), wrap="word")
         pole_pgn.insert("1.0", pgn_zapis)
