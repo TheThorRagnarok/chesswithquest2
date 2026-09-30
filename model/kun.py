@@ -1,4 +1,4 @@
-from figurka import Figurka
+from model.figurka import Figurka
 
 class Kun(Figurka):
     def __init__(self, barva):
@@ -11,3 +11,5 @@ class Kun(Figurka):
         vektory_utoku = vektory
         super().__init__("Kůň", barva, vektory_utoku, vektory)
         self.skok = True
+        self.opakovat = False    # skočí jen jednou
+        self.znacka = "N"
