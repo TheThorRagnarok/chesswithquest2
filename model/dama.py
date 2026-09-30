@@ -1,4 +1,4 @@
-from figurka import Figurka
+from model.figurka import Figurka
 
 class Dama(Figurka):
     def __init__(self, barva):
@@ -9,3 +9,5 @@ class Dama(Figurka):
         vektory_utoku = vektory
         super().__init__("Dáma", barva, vektory_utoku, vektory)
         self.skok = False
+        self.opakovat = True     # jde libovolně daleko
+        self.znacka = "Q"

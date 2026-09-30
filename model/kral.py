@@ -1,4 +1,4 @@
-from figurka import Figurka
+from model.figurka import Figurka
 
 class Kral(Figurka):
     def __init__(self, barva):
@@ -10,3 +10,5 @@ class Kral(Figurka):
         vektory_utoku = vektory
         super().__init__("Král", barva, vektory_utoku, vektory)
         self.skok = False
+        self.opakovat = False    # jen o jedno pole
+        self.znacka = "K"

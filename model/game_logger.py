@@ -3,9 +3,14 @@ class GameLogger:
         self.soubor = soubor
 
     def uloz_tah(self, tah):
+        # Připíše jeden tah na konec souboru
         with open(self.soubor, "a", encoding="utf-8") as f:
             f.write(str(tah) + "\n")
-        print(f"Tah uložen do {self.soubor}")
+
+    def uloz_text(self, text):
+        # Připíše libovolný text (např. celý PGN zápis na konci partie)
+        with open(self.soubor, "a", encoding="utf-8") as f:
+            f.write(text + "\n")
 
     def vytvor_soubor(self, nazev):
         self.soubor = nazev

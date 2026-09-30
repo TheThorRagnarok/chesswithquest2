@@ -1,7 +1,5 @@
 # trida reprezentujici hrace (rozšiřuje Uzivatele o barvu figur)
 
-from uzivatel import Uzivatel
-
 class Hrac:
     def __init__(self, barva, uzivatel):
         self.barva = barva
