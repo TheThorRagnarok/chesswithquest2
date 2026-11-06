@@ -1,5 +1,5 @@
 class GameManager:
-    def __init__(self, plocha, hrac1, hrac2, game_logger, revizor_tahu, casovac):
+    def __init__(self, plocha, hrac1, hrac2, game_logger, revizor_tahu, casovac, kwest_manager):
         self.plocha = plocha
         self.aktivni_hrac = 0            # 0 = bílý, 1 = černý
         self.hraci = [hrac1, hrac2]      # hraci[0] je bílý, hraci[1] černý
@@ -7,6 +7,27 @@ class GameManager:
         self.casovac = casovac
         self.game_logger = game_logger
         self.revizor_tahu = revizor_tahu
+        self.kwest_manager = kwest_manager
+
+    def zpracuj_kvesty(self, tah):
+        # Po provedeném tahu zapíše do statistiky hráče, co se stalo,
+        # a vrátí seznam kvestů, které tím hráč právě splnil.
+        hrac = self.hraci[tah.figurka.barva]
+        souper = 1 - tah.figurka.barva
+
+        dal_sach = self.revizor_tahu.check_sach(souper, self.plocha)
+        sachujici_figurka = None
+        if dal_sach:
+            # figurka, která teď stojí na cílovém poli (po proměně je to dáma)
+            figurka = self.plocha.vrat_obsah(tah.cilova_pozice)
+            if self.revizor_tahu.dava_sach(figurka, self.plocha):
+                sachujici_figurka = figurka.nazev
+
+        hrac.statistika.zaznamenej_tah(tah, dal_sach, sachujici_figurka)
+        nove_splnene = self.kwest_manager.zkontroluj_kvesty(hrac)
+        for kwest in nove_splnene:
+            self.game_logger.uloz_text(f"  -> {hrac.uzivatel.jmeno} splnil kvest: {kwest.nazev}")
+        return nove_splnene
 
     def proved_tah(self):
         # Ověří aktuální tah přes RevizorTahu, provede ho a uloží do logu
