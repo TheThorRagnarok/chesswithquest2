@@ -197,6 +197,15 @@ class RevizorTahu:
             return False
         return self.je_pole_napadeno(kral.pozice, 1 - barva, herni_plocha)
 
+    def dava_sach(self, figurka, herni_plocha):
+        # Vrátí True, pokud právě tato figurka útočí na soupeřova krále
+        if figurka is None:
+            return False
+        kral = self.najdi_krale(1 - figurka.barva, herni_plocha)
+        if kral is None:
+            return False
+        return kral.pozice in self.napadena_pole(figurka, herni_plocha)
+
     def check_mat(self, barva, herni_plocha):
         # Mat = král je v šachu a hráč nemá žádný platný tah
         return self.check_sach(barva, herni_plocha) and not self.ma_platny_tah(barva, herni_plocha)
